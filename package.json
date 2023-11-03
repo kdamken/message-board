@@ -17,5 +17,8 @@
     "nodemon": "^3.0.1",
     "pug": "2.0.0-beta11",
     "stylus": "0.54.5"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.10"
   }
 }

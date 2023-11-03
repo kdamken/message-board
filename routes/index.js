@@ -7,21 +7,7 @@ const MessageModel = require("../models/message");
 // Set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-// console.log('process.env.MDB_CONNECTION_STRING', process.env.MDB_CONNECTION_STRING);
 const mongoDB = process.env.MDB_CONNECTION_STRING;
-
-// main().catch((err) => console.log(err));
-// async function main() {
-//   console.log("Debug: About to connect");
-//   await mongoose.connect(mongoDB);
-//   console.log("Debug: Should be connected?");
-//   await createGenres();
-//   await createAuthors();
-//   await createBooks();
-//   await createBookInstances();
-//   console.log("Debug: Closing mongoose");
-//   mongoose.connection.close();
-// }
 
 async function messageCreate(user, message) {
   const messagedetail = {
@@ -45,7 +31,13 @@ async function getMessages() {
   console.log("Debug: About to connect");
   await mongoose.connect(mongoDB);
   console.log("Debug: Should be connected?");
-  messages = await MessageModel.find({}).sort({ date_posted: -1 });
+  const messages = await MessageModel.find({}).sort({ date_posted: -1 }).lean();
+  console.log('typeof', typeof messages)
+  messages.forEach((element, index) => {
+    console.log('element', element)
+    element.date_posted_clean = new Date(element.date_posted).toLocaleString(); 
+    console.log('element after', element)
+  });
   console.log(`Debug: Finding Messages: ${messages}`);
   console.log("Debug: Closing mongoose");
   mongoose.connection.close();  
